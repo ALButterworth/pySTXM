@@ -164,6 +164,7 @@ def ReadXim(XimName):
     return Xim
 
 def PlotImage(ImRaw, title):
+    plt.clf()
     # Get the min and max intensity.
     vmin = np.min(ImRaw)
     vmax = np.max(ImRaw)
@@ -202,6 +203,7 @@ def PlotStack(Region, Energies, AxisName):
 
 
 def PlotXim(XimName):
+
     # Extract the file name.
     BaseName, _ = os.path.splitext(XimName)
 
