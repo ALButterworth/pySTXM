@@ -1,12 +1,12 @@
 # Created 2014, Zack Gainsforth
 import matplotlib
-matplotlib.use('Qt4Agg')
+#matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import re
 import os
 import io
-import Image
+from PIL import Image
 import tifffile as tf
 from QuickPlot import QuickPlot
 from scipy.ndimage.filters import gaussian_filter1d
@@ -61,11 +61,11 @@ def FitDoubleArcTanFe(E, L2Amp, L3Amp, Pline, QuietMode, S):
     if L3Amp is None:
         L3Amp = S[L3PostPos] - Pline[L3PostPos]
         if not QuietMode:
-            print 'L3 jump computed to be %0.02g' % L3Amp
+            print('L3 jump computed to be %0.02g' % L3Amp)
     if L2Amp is None:
         L2Amp = S[L2PostPos] - Pline[L2PostPos] - L3Amp
         if not QuietMode:
-            print 'L2 jump computed to be %0.02g' % L2Amp
+            print('L2 jump computed to be %0.02g' % L2Amp)
     EdgeL3 = ArcTanEdge(E, L3Amp, L3Edge)
     EdgeL2 = ArcTanEdge(E, L2Amp, L2Edge)
     Edge = EdgeL3 + EdgeL2
@@ -86,11 +86,11 @@ def FitDoubleArcTanTi(E, L2Amp, L3Amp, Pline, QuietMode, S):
         Amp = S[L2PostPos] - Pline[L2PostPos]
         L2Amp = Amp/2
         if not QuietMode:
-            print 'L2 jump computed to be %0.02g' % L2Amp
+            print ('L2 jump computed to be %0.02g' % L2Amp)
     if L3Amp is None:
         L3Amp = L2Amp
         if not QuietMode:
-            print 'L2 jump assumed equal to L3 jump'
+            print ('L2 jump assumed equal to L3 jump')
 
     EdgeL3 = ArcTanEdge(E, L3Amp, L3Edge)
     EdgeL2 = ArcTanEdge(E, L2Amp, L2Edge)
@@ -111,9 +111,9 @@ def VanAkenMethod1(E, QuietMode, S):
     Fe3overFe = np.poly1d(PL3L2)(L3L2)
     # Tell the user the answer.
     if not QuietMode:
-        print 'Method 1 (accuracy +/- 15%), no consideration for coordination effects'
-        print 'I(L3)/I(L2) = %0.2g' % (L3L2)
-        print 'Fe3+/sum(Fe) = %0.2g' % (Fe3overFe)
+        print ('Method 1 (accuracy +/- 15%), no consideration for coordination effects')
+        print ('I(L3)/I(L2) = %0.2g' % (L3L2))
+        print ('Fe3+/sum(Fe) = %0.2g' % (Fe3overFe))
     Method1Fe3overFe = Fe3overFe
     return Method1Fe3overFe
 
@@ -128,9 +128,9 @@ def VanAkenMethod2(E, QuietMode, S):
     Irat + 1.0)
     # Tell the user the answer.
     if not QuietMode:
-        print 'Method 2 (accuracy +/- 4%) (2 eV window method)'
-        print 'I(L3)/I(L2) = %0.2g' % (Irat)
-        print 'Fe3+/sum(Fe) = %0.2g' % (Fe3overFe)
+        print ('Method 2 (accuracy +/- 4%) (2 eV window method)')
+        print ('I(L3)/I(L2) = %0.2g' % (Irat))
+        print ('Fe3+/sum(Fe) = %0.2g' % (Fe3overFe))
     Method2Fe3overFe = Fe3overFe
     return Method2Fe3overFe
 
@@ -172,7 +172,7 @@ def FeLVanAken(Energies, Spectrum, PreEdgeWindowStart=690, PreEdgeWindowStop=704
     if not QuietMode:
         fig, ax = QuickPlot(np.vstack((E,E)), np.vstack((S, S)), boldlevel=3,
                         xlabel='eV', title='White-line spectrum')
-        print fig, ax
+        print (fig, ax)
 
         plt.show()
 
@@ -189,9 +189,9 @@ def StoyanovMethod(E, QuietMode, S):
     TiOxidation = 0.21767*np.log((Irat-0.87953)/0.21992)
     # Tell the user the answer.
     if not QuietMode:
-        print 'Stoyanov method - I(L2)/I(L3)'
-        print 'I(L2)/I(L3) = %0.2g' % (Irat)
-        print 'Ti4+ fraction = %0.2g' % (TiOxidation)
+        print ('Stoyanov method - I(L2)/I(L3)')
+        print ('I(L2)/I(L3) = %0.2g' % (Irat))
+        print ('Ti4+ fraction = %0.2g' % (TiOxidation))
     return TiOxidation
 
 def TiLStoyanov(Energies, Spectrum, PreEdgeWindowStart=447.5, PreEdgeWindowStop=454.0, PostEdgeEnergy=482,
@@ -231,7 +231,7 @@ def TiLStoyanov(Energies, Spectrum, PreEdgeWindowStart=447.5, PreEdgeWindowStop=
     if not QuietMode:
         fig, ax = QuickPlot(np.vstack((E,E)), np.vstack((S, S)), boldlevel=3,
                         xlabel='eV', title='White-line spectrum')
-        print fig, ax
+        print (fig, ax)
 
         plt.show()
 
@@ -253,7 +253,7 @@ if __name__ == '__main__':
     A = np.linspace(0,0.05, 50)
     x = []
     for a in A:
-        print a
+        print (a)
         x.append(FeLVanAken(Energies, Spectrum, L3Amp=a, QuietMode=True))
 
     Method1, Method2 = zip(*x)
@@ -266,4 +266,4 @@ if __name__ == '__main__':
     plt.show(block=False)
 
     FeLVanAken(Energies, Spectrum)
-    print 'Done'
+    print ('Done')
