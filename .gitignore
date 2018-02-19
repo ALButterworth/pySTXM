@@ -1,0 +1,4 @@
+# Ingore all compiled files, pip files, etc.
+*.pyc
+__pycache__/
+pySTXM.egg-info/
